@@ -68,7 +68,7 @@ def create_restaurant_pizza():
     pizza_id = data.get('pizza_id')
     restaurant_id = data.get('restaurant_id')
 
-    if not price or not (1 <= price <= 3000):
+    if not price or not (1 <= price <= 30):
         return jsonify({'errors': ['Invalid price. Price must be between 1 and 30']}), 400
 
     pizza = Pizza.query.get(pizza_id)
