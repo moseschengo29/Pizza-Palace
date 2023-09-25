@@ -21,7 +21,6 @@ with app.app_context():
     pizza2 = Pizza(name='Pepperoni', ingredients='Tomato sauce, mozzarella, pepperoni')
     pizza3 = Pizza(name='Vegetarian', ingredients='Tomato sauce, mozzarella, bell peppers, onions, mushrooms')
 
-    # Add the pizzas to the session and commit
     db.session.add_all([pizza1, pizza2, pizza3])
     db.session.commit()
 
@@ -31,7 +30,6 @@ with app.app_context():
     restaurant_pizza3 = RestaurantPizza(price=11.99, restaurant=restaurant2, pizza=pizza2)
     restaurant_pizza4 = RestaurantPizza(price=14.99, restaurant=restaurant2, pizza=pizza3)
 
-    # Add the restaurant pizzas to the session and commit
     db.session.add_all([restaurant_pizza1, restaurant_pizza2, restaurant_pizza3, restaurant_pizza4])
     db.session.commit()
     

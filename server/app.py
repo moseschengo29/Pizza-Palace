@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request, make_response
 from flask_migrate import Migrate
-from flask_restful import Api, Resource
 from sqlalchemy.exc import IntegrityError
 
 from models import db, Restaurant, RestaurantPizza, Pizza
@@ -16,7 +15,6 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 
-api = Api(app)
 
 
 # Define routes
@@ -25,6 +23,19 @@ def get_restaurants():
     restaurants = Restaurant.query.all()
     
     return jsonify([restaurant.serialize() for restaurant in restaurants])
+
+@app.route('/restaurants', methods=['POST'])
+def add_restaurant():
+    data = request.get_json()
+    name = data.get('name')
+    address = data.get('address')
+    
+    restaurant = Restaurant(name=name, address=address)
+    db.session.add(restaurant)
+    db.session.commit()
+    
+    return jsonify(restaurant.serialize()), 201
+    
 
 @app.route('/restaurants/<int:id>', methods=['GET'])
 def get_restaurant(id):
@@ -43,6 +54,7 @@ def delete_restaurant(id):
         return '', 204
     else:
         return jsonify({'error': 'Restaurant not found'}), 404
+    
 
 @app.route('/pizzas', methods=['GET'])
 def get_pizzas():
@@ -56,7 +68,7 @@ def create_restaurant_pizza():
     pizza_id = data.get('pizza_id')
     restaurant_id = data.get('restaurant_id')
 
-    if not price or not (1 <= price <= 30):
+    if not price or not (1 <= price <= 3000):
         return jsonify({'errors': ['Invalid price. Price must be between 1 and 30']}), 400
 
     pizza = Pizza.query.get(pizza_id)
