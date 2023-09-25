@@ -72,7 +72,7 @@ class Pizzas(Resource):
         pizzas = Pizza.query.all()
         return jsonify([pizza.serialize() for pizza in pizzas])
     
-api.add_resource(Pizzas, '/pizzas')    
+api.add_resource(Pizzas, '/pizzas')  
 
        
 @app.route('/restaurant_pizzas', methods=['POST'])
