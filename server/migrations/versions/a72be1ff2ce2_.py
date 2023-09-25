@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 9557fcd219a1
+Revision ID: a72be1ff2ce2
 Revises: 
-Create Date: 2023-09-24 21:40:11.183521
+Create Date: 2023-09-25 08:13:15.592242
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9557fcd219a1'
+revision = 'a72be1ff2ce2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=255), nullable=True),
     sa.Column('ingredients', sa.String(length=255), nullable=True),
-    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
@@ -37,7 +37,7 @@ def upgrade():
     sa.Column('pizza_id', sa.Integer(), nullable=True),
     sa.Column('restaurant_id', sa.Integer(), nullable=True),
     sa.Column('price', sa.Float(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['pizza_id'], ['pizza.id'], ),
     sa.ForeignKeyConstraint(['restaurant_id'], ['restaurant.id'], ),
