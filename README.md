@@ -8,6 +8,12 @@ This is an api for restaurants that sell pizzas. It has a fully functional datab
 
 You can clone this project to your local machine, then install all the dependencies by running pipenv install, then run pipenv shell after wards to create a new python environment. Once in the environment, change directory to the server by running cd server, then run flask db upgrade to set up the database then run python seed.py to populate it. Finally, run python app.py to begin the server and you are good to go.
 
+### Routes
+
+GET/pizzas
+GET/restaurant
+GET/pizzas
+
 ## Technologies & Languages used
 
 - Python, Flask, Sqlalchemy

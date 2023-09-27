@@ -19,6 +19,11 @@ db.init_app(app)
 
 api = Api(app)
 
+class Index(Resource):
+    def get(self):
+        return '<h1>Welcome to the pizza application!</h1>'
+
+api.add_resource(Index, '/')
 
 class Restaurants(Resource):
     def get(self):
@@ -45,7 +50,7 @@ class RestaurantByID(Resource):
         if restaurant:
             return jsonify(restaurant.serialize())
         else:
-            return jsonify({'error': 'Restaurant not found'}), 404
+            return {'error': 'Restaurant not found!'}, 404
         
     def delete(self, id):
         restaurant = Restaurant.query.get(id)
@@ -55,17 +60,10 @@ class RestaurantByID(Resource):
             db.session.commit()
             return '', 204
         else:
-            return jsonify({'error': 'Restaurant not found'}), 404
+            return {'error': 'Restaurant not found'}, 404
     
 api.add_resource(RestaurantByID, '/restaurants/<int:id>')
 
-@app.route('/restaurants/<int:id>', methods=['GET'])
-def get_restaurant(id):
-    restaurant = Restaurant.query.get(id)
-    if restaurant:
-        return jsonify(restaurant.serialize())
-    else:
-        return jsonify({'error': 'Restaurant not found'}), 404
 
 class Pizzas(Resource):
     def get(self):
@@ -73,6 +71,25 @@ class Pizzas(Resource):
         return jsonify([pizza.serialize() for pizza in pizzas])
     
 api.add_resource(Pizzas, '/pizzas')  
+
+class PizzaById(Resource):
+    def get(self, id):
+        pizza = Pizza.query.get(id)
+        if pizza:
+            return jsonify(pizza.serialize())
+        else:
+            return {'error': 'Pizza not found, use a valid id'}, 404
+
+    def delete(self, id):
+        pizza = Pizza.query.get(id)
+        if pizza:
+            db.session.delete(pizza)
+            db.session.commit()
+            return '', 204
+        else:
+            return {'error': 'Pizza not found, use a valid id'}, 404
+
+api.add_resource(PizzaById, '/pizzas/<int:id>')       
 
        
 @app.route('/restaurant_pizzas', methods=['POST'])

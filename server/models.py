@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
 
@@ -15,6 +16,12 @@ class Restaurant(db.Model):
             'name': self.name,
             'address': self.address
         }
+        
+    @validates('name')
+    def validate_name(self, key, name):
+        if len(name) > 50:
+            raise ValueError('Name must be less than 50 characters.')
+        return name    
 
 class Pizza(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -44,3 +51,10 @@ class RestaurantPizza(db.Model):
     
     def serialize(self):
         return self.pizza.serialize()
+    
+    @validates('price')
+    def validate_price(self, key, price):
+        if not (1 <= price <= 30):
+            raise ValueError('Price must be between 1 and 30.')
+        return price
+    
